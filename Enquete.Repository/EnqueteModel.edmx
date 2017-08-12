@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="enqueteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="option">
+          <Key>
+            <PropertyRef Name="option_id" />
+          </Key>
+          <Property Name="option_id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="option_description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="poll_id" Type="bigint" Nullable="false" />
+          <Property Name="qty" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="poll">
+          <Key>
+            <PropertyRef Name="poll_id" />
+          </Key>
+          <Property Name="poll_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="poll_description" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="views" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_option_poll">
+          <End Role="poll" Type="Self.poll" Multiplicity="1" />
+          <End Role="option" Type="Self.option" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="poll">
+              <PropertyRef Name="poll_id" />
+            </Principal>
+            <Dependent Role="option">
+              <PropertyRef Name="poll_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="enqueteModelStoreContainer">
+          <EntitySet Name="option" EntityType="Self.option" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="poll" EntityType="Self.poll" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_option_poll" Association="Self.FK_option_poll">
+            <End Role="poll" EntitySet="poll" />
+            <End Role="option" EntitySet="option" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="enqueteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="option">
+          <Key>
+            <PropertyRef Name="option_id" />
+          </Key>
+          <Property Name="option_id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="option_description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="poll_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="poll" Relationship="Self.FK_option_poll" FromRole="option" ToRole="poll" />
+          <Property Name="qty" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="poll">
+          <Key>
+            <PropertyRef Name="poll_id" />
+          </Key>
+          <Property Name="poll_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="poll_description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="option" Relationship="Self.FK_option_poll" FromRole="poll" ToRole="option" />
+          <Property Name="views" Type="Int16" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_option_poll">
+          <End Role="poll" Type="Self.poll" Multiplicity="1" />
+          <End Role="option" Type="Self.option" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="poll">
+              <PropertyRef Name="poll_id" />
+            </Principal>
+            <Dependent Role="option">
+              <PropertyRef Name="poll_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="enqueteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="option" EntityType="Self.option" />
+          <EntitySet Name="poll" EntityType="Self.poll" />
+          <AssociationSet Name="FK_option_poll" Association="Self.FK_option_poll">
+            <End Role="poll" EntitySet="poll" />
+            <End Role="option" EntitySet="option" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="enqueteModelStoreContainer" CdmEntityContainer="enqueteEntities">
+          <EntitySetMapping Name="option">
+            <EntityTypeMapping TypeName="enqueteModel.option">
+              <MappingFragment StoreEntitySet="option">
+                <ScalarProperty Name="qty" ColumnName="qty" />
+                <ScalarProperty Name="option_id" ColumnName="option_id" />
+                <ScalarProperty Name="option_description" ColumnName="option_description" />
+                <ScalarProperty Name="poll_id" ColumnName="poll_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="poll">
+            <EntityTypeMapping TypeName="enqueteModel.poll">
+              <MappingFragment StoreEntitySet="poll">
+                <ScalarProperty Name="views" ColumnName="views" />
+                <ScalarProperty Name="poll_id" ColumnName="poll_id" />
+                <ScalarProperty Name="poll_description" ColumnName="poll_description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
